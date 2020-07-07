@@ -14,7 +14,7 @@ module uart_tx #(parameter CLK_CY_PER_BIT = 87)
 		(
 			input 		i_clk,
 			input 		i_Tx_Dv,
-			input [7:0] i_Tx_Byte,
+			input [7:0] 	i_Tx_Byte,
 			output 		o_Tx_Active,
 			output 		o_Tx_Done,
 			output reg	o_Tx_Serial
@@ -31,10 +31,10 @@ module uart_tx #(parameter CLK_CY_PER_BIT = 87)
 		
 		//Defining the internal variables:
 		reg [7:0] 	r_Tx_Data;
-		reg			r_Tx_Done;
-		reg			r_Tx_Active;
-		reg	[7:0]	r_clk_count;	// This will be UP-COUNTER to for wait till we count input clk cycle upto clk_cy_per_bit.
-		reg	[2:0]	r_state;		// Keep track of states in the FSM.
+		reg		r_Tx_Done;
+		reg		r_Tx_Active;
+		reg [7:0]	r_clk_count;	// This will be UP-COUNTER to for wait till we count input clk cycle upto clk_cy_per_bit.
+		reg [2:0]	r_state;		// Keep track of states in the FSM.
 		reg [2:0]	r_bit_idx;		// Keep the track of bit index of input Data Byte of transmitter.
 		reg 		r_parity_out	// Check the parity of the Input Data by the transmitter(Default set to "0")
 		
@@ -49,11 +49,11 @@ module uart_tx #(parameter CLK_CY_PER_BIT = 87)
 				STATE_IDLE:
 				begin
 					//Set all the internal register varible to default value:
-					r_clk_count		<= 0;
-					r_bit_idx		<= 0;
-					r_Tx_Active		<= 1'b0;
-					r_Tx_Data		<= 0;
-					r_Tx_Done		<= 1'b0;
+					r_clk_count	<= 0;
+					r_bit_idx	<= 0;
+					r_Tx_Active	<= 1'b0;
+					r_Tx_Data	<= 0;
+					r_Tx_Done	<= 1'b0;
 					r_parity_out	<= 1'b0;
 					
 					o_Tx_Serial	<= 1'b1;	//Drive HIGH the TX Serial Output.
@@ -61,9 +61,9 @@ module uart_tx #(parameter CLK_CY_PER_BIT = 87)
 					// "if Block"	:	To check get (i_Tx_Dv) input High:
 					if(i_Tx_Dv == 1)
 					begin
-						r_Tx_Active		<= 1'b1;
-						r_Tx_Data		<= i_Tx_Byte;
-						r_state 		<= STATE_START;
+						r_Tx_Active	<= 1'b1;
+						r_Tx_Data	<= i_Tx_Byte;
+						r_state 	<= STATE_START;
 						r_parity_out	<= ^(i_Tx_Byte);
 					end
 					
@@ -82,7 +82,7 @@ module uart_tx #(parameter CLK_CY_PER_BIT = 87)
 					// Keep the Serial line LOWER till the one bit period:
 					if(r_clk_count < CLK_CY_PER_BIT-1)
 					begin
-						r_clk_count <= (r_clk_count + 1)%87;
+						r_clk_count	<= (r_clk_count + 1)%87;
 						r_state		<= STATE_START;
 					end
 					
@@ -110,7 +110,7 @@ module uart_tx #(parameter CLK_CY_PER_BIT = 87)
 					// Else increment the bit_idx(BIT INDEX) to send next bit in the Data Frame:
 					else
 					begin
-						r_clk_count	<= 0;
+						r_clk_count <= 0;
 						if(r_bit_idx < 8)
 						begin
 							r_bit_idx	<= (r_bit_idx + 1);
@@ -129,7 +129,7 @@ module uart_tx #(parameter CLK_CY_PER_BIT = 87)
 				STATE_PARITY :
 				begin
 					
-					o_Tx_Serial	<=	r_parity_out;
+					o_Tx_Serial <= r_parity_out;
 					
 					//Wait for one BIT PERIOD:
 					if(r_clk_count < CLK_CY_PER_BIT-1)
@@ -144,7 +144,7 @@ module uart_tx #(parameter CLK_CY_PER_BIT = 87)
 						r_clk_count	<= 0;
 						r_state		<= STATE_STOP;
 					end
-				end
+				end // case : STATE_PARITY
 				
 				// Send the STOP bit(HIGH) to Serial line 
 				STATE_STOP :
@@ -175,7 +175,7 @@ module uart_tx #(parameter CLK_CY_PER_BIT = 87)
 				
 				default : 
 				begin
-					r_state		<= STATE_IDLE;
+					r_state	 <= STATE_IDLE;
 				end	// case : default
 			endcase
 		end
