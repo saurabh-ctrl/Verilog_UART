@@ -50,7 +50,7 @@ module test_uart;
 		i_Tx_Dv		<= 1'b1;
 		i_Tx_Byte	<= 8'h8B;
 		@(posedge i_clk);
-		i_Tx_Dv		<=	1'b0;
+		i_Tx_Dv		<= 1'b0;
 		@(posedge uut.UART_TX_INST.o_Tx_Done);
 		$display("Transmitter has Done transmitting to the Serial Line");
 	end
