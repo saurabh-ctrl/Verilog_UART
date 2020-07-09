@@ -9,23 +9,23 @@
 module test_uart_rx;
 	
 	//Define the variables same as the ports of DUT (UART Receiver)
-	reg			i_clk;
-	reg			i_Rx_Serial;
-	wire			o_Rx_Dv;
+	reg		i_clk;
+	reg		i_Rx_Serial;
+	wire		o_Rx_Dv;
 	wire [7:0]	o_Rx_Byte;
 	
 	// To Cross checke wheather the data is received is correct or not:
-	reg			r_parity_check;
+	reg		r_parity_check;
 	reg [7:0]	r_in_Byte;
 	reg [10:0] 	r_in_serial;
-	reg	[3:0]	r_bit_idx;
-	reg			r_parity;
+	reg [3:0]	r_bit_idx;
+	reg		r_parity;
 	
 	// Define Parameter : Purpose : To get the clock of 10MHz and the Baud Rate of 115200.
 	// So the CLK_CY_PER_BIT = 87 (Approx.)
 	parameter IN_CLK_PER 		= 100;		// For input clk of 10MHz (`timescale 1ns/1ps)
 	parameter CLK_CY_PER_BIT	= 87;
-	parameter BIT_PERIOD			= 8600; 
+	parameter BIT_PERIOD		= 8600; 
 	
 	// Instantiate the DUT:
 	uart_rx #(.CLK_CY_PER_BIT(CLK_CY_PER_BIT)) UART_RX_INST
