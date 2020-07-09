@@ -11,27 +11,27 @@
 
 module uart_rx #(parameter CLK_CY_PER_BIT = 87)
 	(
-		input 			i_clk,
-		input 			i_Rx_Serial,
+		input 		i_clk,
+		input 		i_Rx_Serial,
 		output [7:0] 	o_Rx_Byte,
-		output 			o_Rx_Dv
+		output 		o_Rx_Dv
 	);
 	
 	// We are implementing this module using the state machine:
 	// Defining states of FSM as localparam:
-	localparam STATE_IDLE			= 3'b000;
-	localparam STATE_START_GET		= 3'b001;
-	localparam STATE_DATA_GET		= 3'b010;
+	localparam STATE_IDLE		= 3'b000;
+	localparam STATE_START_GET	= 3'b001;
+	localparam STATE_DATA_GET	= 3'b010;
 	localparam STATE_PARITY_GET	= 3'b011;
-	localparam STATE_STOP_GET		= 3'b100;
-	localparam STATE_CLEANUP		= 3'b101;
+	localparam STATE_STOP_GET	= 3'b100;
+	localparam STATE_CLEANUP	= 3'b101;
 	
 	// Internal variable:
-	reg [2:0] 	r_state;		// Keep track of states in the FSM.
-	reg [7:0] 	r_clk_count;	// This will be UP-COUNTER to for wait till we count input clk cycle upto clk_cy_per_bit.
-	reg [2:0] 	r_bit_idx;		// Keep the track of bit index of input Data Byte From transmitter.
-	reg [7:0] 	r_Rx_Byte;
-	reg 			r_Rx_Dv;
+	reg [2:0] r_state;		// Keep track of states in the FSM.
+	reg [7:0] r_clk_count;	// This will be UP-COUNTER to for wait till we count input clk cycle upto clk_cy_per_bit.
+	reg [2:0] r_bit_idx;		// Keep the track of bit index of input Data Byte From transmitter.
+	reg [7:0] r_Rx_Byte;
+	reg 	  r_Rx_Dv;
 	
 	// The Received Serial line input to the Receiver will be go through buffer:
 	// We will extract the input Serial Line to the input at the middle of the say BIT_PERIOD
