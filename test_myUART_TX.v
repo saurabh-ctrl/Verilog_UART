@@ -10,7 +10,7 @@
 module test_uart_tx;
 
 	// Definig the variables same as port of DUT(UART TX):
-	reg			i_clk;
+	reg		i_clk;
 	reg 		i_Tx_Dv;
 	reg [7:0]	i_Tx_Byte;
 	wire 		o_Tx_Active;
@@ -28,13 +28,13 @@ module test_uart_tx;
 	
 	// Instantiate the DUT ( uart_tx module):
 	uart_tx #(.CLK_CY_PER_BIT(CLK_CY_PER_BIT)) UART_TX_INST
-    (.i_clk(i_clk),
-     .i_Tx_Dv(i_Tx_Dv),
-     .i_Tx_Byte(i_Tx_Byte),
-     .o_Tx_Active(o_Tx_Active),
-     .o_Tx_Serial(o_Tx_Serial),
-     .o_Tx_Done(o_Tx_Done)
-    );
+	    (.i_clk(i_clk),
+	     .i_Tx_Dv(i_Tx_Dv),
+	     .i_Tx_Byte(i_Tx_Byte),
+	     .o_Tx_Active(o_Tx_Active),
+	     .o_Tx_Serial(o_Tx_Serial),
+	     .o_Tx_Done(o_Tx_Done)
+	    );
 	 
 	// Clock Build Block:
 	initial
@@ -50,8 +50,8 @@ module test_uart_tx;
 		i_Tx_Byte	<= 0;
 		@(posedge i_clk);
 		
-		i_Tx_Dv			<= 1;
-		i_Tx_Byte		<= 8'hAA;
+		i_Tx_Dv		<= 1;
+		i_Tx_Byte	<= 8'hAA;
 		r_exp_parity	<= ^(i_Tx_Byte);
 		
 		@(posedge i_clk);
